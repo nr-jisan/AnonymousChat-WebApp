@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - AnonymousChat</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="header">
+        <img src="/images/logo.png" alt="AnonymousChat Logo" class="logo">
+        <span class="web-name">AnonymousChat</span>
+    </div>
+
+    <div class="container">
+        <div class="text-section">
+            <h1>🌟Join AnonymousChat🌟<br> No Identity, Just Conversations! </h1>
+            <p>Create your account, explore new connections, and chat freely in a secure, messenger-like interface. Stay anonymous, stay connected!</p>
+        </div>
+
+        <div class="auth-container">
+            <div class="form-box">
+                <h1 class="title">Create Account</h1>
+                <form action="/register" method="POST">
+                    <div class="input-group">
+                        <input type="text" name="username" required placeholder="Username">
+                    </div>
+                    <div class="input-group">
+                        <input type="email" name="email" required placeholder="Email">
+                    </div>
+                    <div class="input-group">
+                        <input type="password" name="password" required placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn">Sign Up</button>
+                </form>
+                <p>Already have an account? <a href="/login">Login Here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><a href="#">Terms Of Service</a> | <a href="#">Privacy Policy</a> | <a href="#">Community Guidelines</a></p>
+    </footer>
+</body>
+</html>

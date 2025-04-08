@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnonymousChat</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="chat-background">
+    <div class="chat-container">
+        <!-- Left Panel (Chat History & Create Group Button) -->
+        <div class="chat-sidebar">
+            <div class="chat-header">
+                <!-- Logo with Name -->
+                <div class="chat-logo">
+                    <img src="/images/logo.png" alt="AnonymousChat Logo">
+                    <span class="chat-name">AnonymousChat</span>
+                </div>
+            
+                <!-- Logout Button -->
+                <button class="glowing-btn logout-btn" onclick="window.location.href='/logout'">Logout</button>
+            </div>
+            
+            <div class="chat-history">
+                <h3>Chat History</h3>
+                <ul id="chatList">
+                    <!-- Chat history will be added dynamically -->
+                </ul>
+            </div>
+            <!-- Create New Group Button -->
+            <div class="group-btn-container">
+                <button id="createGroup" class="glowing-group-btn">+ Create New Group</button>
+            </div>
+        </div>
+
+        <!-- Right Panel (Chat Messages & Input) -->
+        <div class="chat-main">
+            <div class="chat-header">
+                <h2>Chat Room</h2>
+                <button id="logout" class="glowing-btn logout-btn" onclick="window.location.href='/logout'">Logout</button>
+            </div>
+            <div class="chat-box" id="chatBox">
+                <!-- Messages will be dynamically added here -->
+            </div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Type a message..." />
+                <button id="sendMessage" class="glowing-btn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Group Modal -->
+    <div id="createGroupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create New Group</h2>
+            <form id="createGroupForm">
+                <div class="input-group">
+                    <input type="text" id="groupName" placeholder="Group Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="groupSize" placeholder="Number of Members" required>
+                </div>
+                <button type="submit" class="glowing-btn">Create Group</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Show modal
+        document.getElementById('createGroup').onclick = function() {
+            document.getElementById('createGroupModal').style.display = 'block';
+        };
+
+        // Close modal
+        document.querySelector('.close').onclick = function() {
+            document.getElementById('createGroupModal').style.display = 'none';
+        };
+
+        // Create Group
+        document.getElementById('createGroupForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const groupName = document.getElementById('groupName').value;
+            const groupSize = document.getElementById('groupSize').value;
+
+            const response = await fetch('/createGroup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ groupName, groupSize })
+            });
+
+            const data = await response.json();
+            const groupLink = `http://localhost:3000/group/${data.groupId}`;
+            alert(`Group created! Share this link: ${groupLink}`);
+        };
+
+        // Send Message
+        document.getElementById('sendMessage').onclick = function() {
+            const message = document.getElementById('messageInput').value;
+            socket.emit('groupMessage', { groupId: 'default', message, username: 'Anonymous' });
+            document.getElementById('messageInput').value = '';
+        };
+
+        // Receive Message
+        socket.on('groupMessage', ({ username, message }) => {
+            const item = document.createElement('li');
+            item.textContent = `${username}: ${message}`;
+            document.getElementById('chatBox').appendChild(item);
+        });
+    </script>
+</body>
+</html>
