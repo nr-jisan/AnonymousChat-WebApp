@@ -1,0 +1,360 @@
+/* General Styles */
+body {
+    background: url('/images/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Header - Logo and Web Name */
+.header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    position: absolute;
+    top: 0;
+    left: 20px;
+}
+
+.logo {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.web-name {
+    font-size: 32px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #ff00ff, #8000ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 8px rgba(255, 0, 255, 0.5);
+}
+
+/* Container - Split Screen */
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    padding: 50px;
+}
+
+/* Left Section - Chat Description */
+.text-section {
+    width: 50%;
+    padding: 50px;
+}
+
+.text-section h1 {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.text-section p {
+    font-size: 18px;
+    max-width: 500px;
+}
+
+/* Right Section - Authentication Forms */
+.auth-container {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.form-box {
+    background: rgba(26, 26, 26, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #ff00ff;
+}
+
+.input-group {
+    margin: 10px 0;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #333;
+    color: #fff;
+}
+
+.btn {
+    background: linear-gradient(45deg, #ff00ff, #8000ff);
+    color: white;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: linear-gradient(45deg, #8000ff, #ff00ff);
+}
+/* Background Glow Animation */
+.chat-background {
+    background: radial-gradient(circle, rgba(35, 0, 50, 1) 10%, rgba(5, 0, 20, 1) 80%);
+    animation: glowingBackground 10s infinite alternate;
+}
+
+/* Chat Container */
+.chat-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Left Sidebar (Chat History) */
+.chat-sidebar {
+    width: 28%; /* Increased size */
+    background: rgba(0, 0, 0, 0.85);
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Chat Title */
+.chat-title {
+    font-size: 26px; /* Increased size */
+    font-weight: bold;
+    color: #ff00ff;
+    text-shadow: 0px 0px 15px #ff00ff;
+}
+
+/* Improved Chat History */
+.chat-history {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.15); /* Light dark background */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
+    max-height: 65vh; /* Slightly larger */
+    overflow-y: auto;
+}
+
+.chat-history h3 {
+    text-align: center;
+    font-size: 22px; /* Increased size */
+    color: #ff00ff;
+    margin-bottom: 12px;
+    text-shadow: 0px 0px 12px #ff00ff;
+}
+
+#chatList {
+    list-style: none;
+    padding: 0;
+}
+
+#chatList li {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+    color: white;
+    text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.8);
+}
+
+#chatList li:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Right Main Chat (Chatroom with Image Background) */
+.chat-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: url('your-chatroom-image.jpg') center/cover no-repeat; /* Add your image */
+    padding: 20px;
+    color: white;
+}
+
+/* Chat Header */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Chat Box */
+.chat-box {
+    flex-grow: 1;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.7); /* Dark transparent layer */
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 12px rgba(255, 255, 255, 0.2);
+}
+
+/* Chat Input */
+.chat-input {
+    display: flex;
+    gap: 12px;
+}
+
+input {
+    flex-grow: 1;
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    background: #ddd;
+    color: black;
+}
+
+/* Glowing Buttons */
+.glowing-btn {
+    background: linear-gradient(45deg, #ff00ff, #8000ff);
+    color: white;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 6px;
+    box-shadow: 0px 0px 12px rgba(255, 0, 255, 0.8);
+    text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.8);
+}
+
+.glowing-btn:hover {
+    background: linear-gradient(45deg, #8000ff, #ff00ff);
+    box-shadow: 0px 0px 15px rgba(255, 0, 255, 1);
+}
+
+/* Logout Button */
+.logout-btn {
+    background: red;
+    box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8);
+}
+
+/* Group Button */
+.group-btn-container {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.glowing-group-btn {
+    background: linear-gradient(45deg, #ff4500, #ff8c00);
+    color: white;
+    padding: 14px 22px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 18px;
+    border-radius: 30px; /* Rounded button */
+    box-shadow: 0px 0px 12px rgba(255, 140, 0, 0.8);
+    text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.8);
+}
+
+.glowing-group-btn:hover {
+    background: linear-gradient(45deg, #ff8c00, #ff4500);
+    box-shadow: 0px 0px 15px rgba(255, 140, 0, 1);
+}
+/* Chat Header Styling */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+/* Logo Container */
+.chat-logo {
+    display: flex;
+    align-items: center;
+}
+
+/* Logo Image */
+.chat-logo img {
+    width: 50px; /* Adjust logo size */
+    height: 50px;
+    margin-right: 10px;
+}
+
+/* Logo Text */
+.chat-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff00ff; /* Glowing purple text */
+    text-shadow: 0px 0px 10px #ff00ff;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    background: rgba(26, 26, 26, 0.9);
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.close {
+    color: #ff00ff;
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #8000ff;
+}
+
+
+/* Footer */
+footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+footer a {
+    color: #ff00ff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
