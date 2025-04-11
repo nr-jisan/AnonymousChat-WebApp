@@ -79,5 +79,89 @@ app.post("/login", (req, res) => {
 });
 
 // Rest of your code (groups, sockets, etc.)
+app.get("/group/:groupId", (req, res) => {
+    if (!req.session.user) return res.redirect("/login");
+
+    const groupId = req.params.groupId;
+    const sql = "SELECT * FROM groups WHERE id = ?";
+    db.query(sql, [groupId], (err, results) => {
+        if (err || results.length === 0) {
+            return res.send("Group not found");
+        }
+
+        const group = results[0];
+        const userId = req.session.user.id;
+
+        // Check if already in group
+        const checkSql = "SELECT * FROM group_members WHERE group_id = ? AND user_id = ?";
+        db.query(checkSql, [groupId, userId], (err, memberResults) => {
+            if (err) return res.send("Error checking group membership");
+
+            if (memberResults.length === 0) {
+                // Assign anonymous name
+                const anonName = `Anon${Math.floor(1000 + Math.random() * 9000)}`;
+                const insertSql = "INSERT INTO group_members (group_id, user_id, anon_name) VALUES (?, ?, ?)";
+                db.query(insertSql, [groupId, userId, anonName], (err) => {
+                    if (err) return res.send("Error joining group");
+                    res.render("groupChat", { groupId, username: anonName, userId: req.session.user.id });
+
+                });
+            } else {
+                const anonName = memberResults[0].anon_name;
+                res.render("groupChat", { groupId, username: anonName, userId: req.session.user.id });
+
+            }
+        });
+    });
+});
+
+app.post("/createGroup", (req, res) => {
+    const { groupName, groupSize } = req.body;
+    const groupId = uuidv4();
+
+    const sql = "INSERT INTO groups (id, name, max_members) VALUES (?, ?, ?)";
+    db.query(sql, [groupId, groupName, groupSize], (err) => {
+        if (err) return res.status(500).json({ error: "Failed to create group" });
+
+        res.json({ groupId });
+    });
+});
+
+io.on("connection", (socket) => {
+    console.log("A user connected");
+
+    socket.on("joinGroup", ({ groupId, username, userId }) => {
+        socket.join(groupId);
+        socket.groupId = groupId;
+        socket.username = username;
+        socket.userId = userId; // ✅ Save this too!
+    });
+    
+
+    socket.on("message", (message) => {
+        const { groupId, username, userId } = socket;
+    
+        // Broadcast the message
+        io.to(groupId).emit("message", {
+            username,
+            message
+        });
+    
+        // Save to database
+        const sql = "INSERT INTO messages (group_id, user_id, anon_name, message) VALUES (?, ?, ?, ?)";
+        db.query(sql, [groupId, userId, username, message], (err) => {
+            if (err) console.error("Message insert error:", err);
+        });
+    });
+    
+
+    socket.on("groupMessage", ({ groupId, message, username }) => {
+        io.to(groupId).emit("groupMessage", {
+            username,
+            message
+        });
+    });
+});
+
 
 server.listen(3000, () => console.log("Server running on port 3000"));
