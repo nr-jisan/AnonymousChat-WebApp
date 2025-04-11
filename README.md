@@ -1,6 +1,6 @@
 <!-- HEADER -->
 <h1 align="center">
-  🌌 Anonymous Chat (ColorfulAuth) 🌌
+  🕵️‍♀️ AnonymousChat 🕵️‍♀️
 </h1>
 
 <p align="center">
@@ -25,15 +25,30 @@
 - Secure real-time communication
 - Creative collaboration without identities
 
----
+🧪 Built with:
+- `Node.js` for backend
+- `MySQL` for authentication storage
+- `Socket.IO` for real-time communication
+- `EJS` templates for frontend rendering
+
+
+
 
 ## 🖼️ Screenshots
 
-| Login | Register | Group Chat | Chat Interface |
-|-------|----------|-------------|----------------|
-| ![](public/images/login-screenshot.png) | ![](public/images/register-screenshot.png) | ![](public/images/group-screenshot.png) | ![](public/images/chat-screenshot.png) |
 
-> 📌 _Make sure to add screenshots inside `/public/images/`._
+### 🔐 Login Page
+![Login Page](public/images/Homepage.jpg)
+
+### ✍️ Registration Page
+![Register Page](public/images/Registration.png)
+
+### 💬 Chat Interface
+![Chat Page](public/images/ChatInterface.png)
+
+### 🧑‍🤝‍🧑 Creating group
+![Group Chat](public/images/CreatingGroup.png)
+
 
 ---
 
@@ -92,17 +107,25 @@ COLORFULAUTH/
 
 ## 📦 Installation & Usage
 
-```bash
+
 # 1. Clone the repository
+```bash
 git clone https://github.com/nr-jisan/anonymous-chat.git
 cd anonymous-chat
+```
 
 # 2. Install dependencies
+```bash
 npm install
+```
 
 # 3. Configure MySQL credentials in the code
+```bash
+npm install express mysql2 uuid socket.io express-session body-parser ejs
+```
 
 # 4. Start the server
+```bash
 node server.js
 ```
 
@@ -112,13 +135,12 @@ node server.js
 
 ## 🔐 Database Setup
 
-> Replace with your actual credentials inside the server file.
-
 ### Sample MySQL Tables
 ```sql
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(50) NOT NULL,
+  email VARCHAR(50) NOT NULL,
   password VARCHAR(255) NOT NULL
 );
 
@@ -153,26 +175,34 @@ CREATE TABLE messages (
 ## 🙋‍♂️ Developer
 
 **Md. Naimur Rahman Jisan**  
-🎓 B.Sc in CSE | 📘 4th Semester  
+Team Leader, Full Stack Developer  
+🎓 Pursuing B.Sc in CSE | 🏫 State University Of Bangladesh   
 📍 Bangladesh  
+**Md. Abu Nasif Ahamad Jim**  
+Co-Developer   
+🎓 Pursuing B.Sc in CSE | 🏫 State University Of Bangladesh   
+📍 Bangladesh
 
-[![GitHub](https://img.shields.io/badge/GitHub-nr--jisan-181717?style=for-the-badge&logo=github)](https://github.com/nr-jisan)
 
----
-
-## 🤝 Support & Contribution
-
-> Pull requests and issues are welcome!
-
-If this project helped you, leave a ⭐ and share it.
 
 ---
+
 
 ## 📬 Let’s Connect!
 
 <p align="center">
-  <a href="https://github.com/nr-jisan"><img src="https://img.shields.io/badge/GitHub-nr--jisan-181717?style=for-the-badge&logo=github"></a>
-  <a href="mailto:your@email.com"><img src="https://img.shields.io/badge/Email-Say%20Hello-D14836?style=for-the-badge&logo=gmail&logoColor=white"></a>
+  
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.linkedin.com/in/naimur-rahman-jisan/" target="_blank">
+    <img src="https://user-images.githubusercontent.com/74038190/235294012-0a55e343-37ad-4b0f-924f-c8431d9d2483.gif" width="100"/>
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.instagram.com/naimurrahmanjisan99/" target="_blank">
+    <img src="https://user-images.githubusercontent.com/74038190/235294013-a33e5c43-a01c-43f6-b44d-a406d8b4ab75.gif" width="100"/>
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.facebook.com/nrjisan" target="_blank">
+    <img src="https://user-images.githubusercontent.com/74038190/235294010-ec412ef5-e3da-4efa-b1d4-0ab4d4638755.gif" width="100"/>
+  </a>
 </p>
+
 
 ---
