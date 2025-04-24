@@ -16,11 +16,9 @@
                     <img src="/images/logo.png" alt="AnonymousChat Logo">
                     <span class="chat-name">AnonymousChat</span>
                 </div>
-            
                 <!-- Logout Button -->
                 <button class="glowing-btn logout-btn" onclick="window.location.href='/logout'">Logout</button>
             </div>
-            
             <div class="chat-history">
                 <h3>Chat History</h3>
                 <ul id="chatList">
@@ -37,13 +35,13 @@
         <div class="chat-main">
             <div class="chat-header">
                 <h2>Chat Room</h2>
-                <button id="logout" class="glowing-btn logout-btn" onclick="window.location.href='/logout'">Logout</button>
+                <button class="glowing-btn logout-btn" onclick="window.location.href='/logout'">Logout</button>
             </div>
             <div class="chat-box" id="chatBox">
                 <!-- Messages will be dynamically added here -->
             </div>
             <div class="chat-input">
-                <input type="text" id="messageInput" placeholder="Type a message..." />
+                <input type="text" id="messageInput" placeholder="Type a message...">
                 <button id="sendMessage" class="glowing-btn">Send</button>
             </div>
         </div>
@@ -93,22 +91,38 @@
             });
 
             const data = await response.json();
-            const groupLink = `http://localhost:3000/group/${data.groupId}`;
+            const groupLink = `${window.location.origin}/group/${data.groupId}`;
             alert(`Group created! Share this link: ${groupLink}`);
+
+            // Add to chat history
+            const li = document.createElement('li');
+            li.textContent = groupName;
+            li.onclick = () => window.location.href = `/group/${data.groupId}`;
+            document.getElementById('chatList').appendChild(li);
+
+            // Close modal
+            document.getElementById('createGroupModal').style.display = 'none';
         };
 
         // Send Message
         document.getElementById('sendMessage').onclick = function() {
             const message = document.getElementById('messageInput').value;
-            socket.emit('groupMessage', { groupId: 'default', message, username: 'Anonymous' });
-            document.getElementById('messageInput').value = '';
+            if (message.trim()) {
+                socket.emit('groupMessage', { groupId: 'default', message, username: 'Anonymous' });
+                document.getElementById('messageInput').value = '';
+            }
         };
 
         // Receive Message
         socket.on('groupMessage', ({ username, message }) => {
-            const item = document.createElement('li');
-            item.textContent = `${username}: ${message}`;
+            const item = document.createElement('div');
+            item.classList.add('message');
+            item.innerHTML = `
+                <span class="username">${username}</span>
+                <span class="message-text">${message}</span>
+            `;
             document.getElementById('chatBox').appendChild(item);
+            document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
         });
     </script>
 </body>
