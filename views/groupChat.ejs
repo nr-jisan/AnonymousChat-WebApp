@@ -1,57 +1,230 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anonymous Group Chat</title>
-    <link rel="stylesheet" href="/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anonymous Group Chat</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    body.chat-background {
+      background: #1e1e2f;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+    }
+    .chat-container {
+      width: 45%;
+      height: 90vh;
+      display: flex;
+      background: #2c2f48;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(214, 191, 238, 0.5);
+    }
+    .chat-main {
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+        max-width: 700px; /* NEW: set a maximum width */
+        width: 100%;
+        margin: 0 auto; /* NEW: center it */
+    }
+
+    .chat-header {
+      background: #26293f;
+      padding: 15px 20px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .chat-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #2c2f48;
+    }
+    .chat-input {
+      display: flex;
+      padding: 15px;
+      background: #26293f;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      background: #3a3d5c;
+      color: white;
+      font-size: 15px;
+      margin-right: 10px;
+    }
+    .glowing-btn {
+        background: #7e33ff;
+        border: none;
+        padding: 14px 24px;
+        border-radius: 25px;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 0 6px rgba(255, 255, 255, 0.4); /* Subtle white glow */
+    }
+
+    .glowing-btn:hover {
+        background: #9a66ff; /* Lighter purple on hover */
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.6); /* More pronounced glow on hover */
+        transform: scale(1.05); /* Slightly enlarge the button */
+    }
+
+        .glowing-btn:active {
+        transform: scale(1); /* Reset scale on click */
+    }
+
+
+    .message {
+      max-width: 55%;
+      padding: 12px 18px;
+      border-radius: 20px;
+      font-size: 15px;
+      line-height: 1.4;
+      position: relative;
+      display: inline-block;
+      word-break: break-word;
+    }
+    .sent {
+      align-self: flex-end;
+      background: #7e33ff;
+      color: white;
+      border-bottom-right-radius: 0;
+    }
+    .received {
+      align-self: flex-start;
+      background: #404368;
+      color: white;
+      border-bottom-left-radius: 0;
+    }
+    .username {
+      font-size: 12px;
+      color: #c5a3ff;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .timestamp {
+      display: block;
+      font-size: 10px;
+      color: #e8e6e6;
+      margin-top: 5px;
+      text-align: right;
+    }
+
+  </style>
 </head>
 <body class="chat-background">
-    <div class="chat-container">
-        <div class="chat-main">
-            <div class="chat-header">
-                <h2>🔒 Secret Group</h2>
-                <button class="glowing-btn" onclick="location.href='/'">Leave</button>
-            </div>
-            <div class="chat-box" id="chatBox"></div>
-            <div class="chat-input">
-                <input type="text" id="messageInput" placeholder="Type anonymously...">
-                <button id="sendMessage" class="glowing-btn">Send</button>
-            </div>
-        </div>
+  <div class="chat-container">
+    <div class="chat-main">
+      <div class="chat-header">
+        🔒 Secret Group
+        <button class="glowing-btn" onclick="location.href='/chat'">Leave</button>
+      </div>
+      <div class="chat-box" id="chatBox"></div>
+      <div class="chat-input">
+        <input type="text" id="messageInput" placeholder="Type anonymously...">
+        <button id="sendMessage" class="glowing-btn">Send</button>
+      </div>
     </div>
+  </div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
-        const groupId = "<%= groupId %>";
-        const username = "<%= username %>";
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const groupId = "<%= groupId %>";
+    const username = "<%= username %>";
 
-        socket.emit("joinGroup", { groupId, username });
+    socket.emit("joinGroup", { groupId, username });
 
-        document.getElementById("sendMessage").addEventListener("click", () => {
-            const message = document.getElementById("messageInput").value;
-            if (message.trim()) {
-                socket.emit("message", message);
-                document.getElementById("messageInput").value = "";
-            }
-        });
+    const sendMessage = () => {
+      const message = document.getElementById("messageInput").value;
+      if (message.trim()) {
+        socket.emit("message", message);
+        document.getElementById("messageInput").value = "";
+      }
+    };
 
-        socket.on("message", ({ username, message }) => {
-            const msgElement = document.createElement("div");
-            msgElement.className = "message";
-            msgElement.innerHTML = `
-                <span class="username">${username}</span>
-                <span class="message-text">${message}</span>
-            `;
-            document.getElementById("chatBox").appendChild(msgElement);
-        });
+    document.getElementById("sendMessage").addEventListener("click", sendMessage);
+    document.getElementById("messageInput").addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
 
-        socket.on("kicked", () => {
-            alert("You've been removed by admin 👋");
-            location.href = "/";
-        });
-    </script>
+    socket.on("message", ({ username: senderUsername, message }) => {
+      const msgElement = document.createElement("div");
+      msgElement.className = "message";
+
+      if (senderUsername === username) {
+        msgElement.classList.add("sent");
+      } else {
+        msgElement.classList.add("received");
+        const nameElement = document.createElement("span");
+        nameElement.className = "username";
+        nameElement.innerText = senderUsername;
+        msgElement.appendChild(nameElement);
+      }
+
+      const textElement = document.createElement("span");
+      textElement.innerText = message;
+      msgElement.appendChild(textElement);
+
+      const timeElement = document.createElement("span");
+      timeElement.className = "timestamp";
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      timeElement.innerText = `${hours}:${minutes}`;
+      msgElement.appendChild(timeElement);
+
+      document.getElementById("chatBox").appendChild(msgElement);
+      document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
+    });
+
+    socket.on("kicked", () => {
+      alert("You've been removed by admin 👋");
+      location.href = "/chat";
+    });
+
+    socket.on("updateParticipants", (participants) => {
+      const participantsList = document.getElementById("participantsList");
+      const participantCount = document.getElementById("participantCount");
+      participantsList.innerHTML = "";
+      participantCount.innerText = participants.length;
+
+      participants.forEach(participant => {
+        const participantDiv = document.createElement("div");
+        participantDiv.className = "participant";
+        participantDiv.innerHTML = `
+          <span>${participant}</span>
+          <button onclick="kickUser('${participant}')">Remove</button>
+        `;
+        participantsList.appendChild(participantDiv);
+      });
+    });
+
+    function kickUser(targetUsername) {
+      socket.emit("kickUser", { groupId, targetUsername });
+    }
+  </script>
 </body>
 </html>
