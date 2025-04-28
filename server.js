@@ -10,6 +10,9 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
+
 // Middleware to parse form data
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -162,6 +165,5 @@ io.on("connection", (socket) => {
         });
     });
 });
-
 
 server.listen(3000, () => console.log("Server running on port 3000"));

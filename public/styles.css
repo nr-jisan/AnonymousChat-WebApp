@@ -157,10 +157,23 @@ input {
 .chat-history h3 {
     text-align: center;
     font-size: 22px; /* Increased size */
-    color: #ff00ff;
+    color: #fffeff;
     margin-bottom: 12px;
-    text-shadow: 0px 0px 12px #ff00ff;
+    text-shadow: 0px 0px 12px #b4b1b4;
 }
+.chat-background {
+    background-image: url('/images/background1.jpg'); /* Path to your background image */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* This keeps the background fixed while scrolling */
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff; /* Ensures your text is visible on dark or light backgrounds */
+}
+
 
 #chatList {
     list-style: none;
@@ -301,6 +314,38 @@ input {
     font-weight: bold;
     color: #ff00ff; /* Glowing purple text */
     text-shadow: 0px 0px 10px #ff00ff;
+}
+.info-section {
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 12px;
+    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.2);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.info-section h1 {
+    font-size: 42px;
+    color: #ff00ff;
+    text-shadow: 0px 0px 10px #ff00ff;
+    margin-bottom: 20px;
+}
+
+.info-section p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.features-list li {
+    margin: 10px 0;
+    font-size: 18px;
+    text-shadow: 0px 0px 5px #ffffff;
 }
 
 .modal {

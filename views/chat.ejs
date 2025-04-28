@@ -1,3 +1,6 @@
+//chat.ejs file
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,10 +11,10 @@
 </head>
 <body class="chat-background">
     <div class="chat-container">
-        <!-- Left Panel (Chat History & Create Group Button) -->
+        <!-- Left Panel (Logo, Chat History, Create Group, Logout) -->
         <div class="chat-sidebar">
             <div class="chat-header">
-                <!-- Logo with Name -->
+                <!-- Logo and Name -->
                 <div class="chat-logo">
                     <img src="/images/logo.png" alt="AnonymousChat Logo">
                     <span class="chat-name">AnonymousChat</span>
@@ -19,30 +22,34 @@
                 <!-- Logout Button -->
                 <button class="glowing-btn logout-btn" onclick="window.location.href='/logout'">Logout</button>
             </div>
+
             <div class="chat-history">
-                <h3>Chat History</h3>
+                <h3>Your Created Groups</h3>
                 <ul id="chatList">
                     <!-- Chat history will be added dynamically -->
                 </ul>
             </div>
+
             <!-- Create New Group Button -->
             <div class="group-btn-container">
                 <button id="createGroup" class="glowing-group-btn">+ Create New Group</button>
             </div>
         </div>
 
-        <!-- Right Panel (Chat Messages & Input) -->
+        <!-- Right Panel (Information Section) -->
         <div class="chat-main">
-            <div class="chat-header">
-                <h2>Chat Room</h2>
-                <button class="glowing-btn logout-btn" onclick="window.location.href='/logout'">Logout</button>
-            </div>
-            <div class="chat-box" id="chatBox">
-                <!-- Messages will be dynamically added here -->
-            </div>
-            <div class="chat-input">
-                <input type="text" id="messageInput" placeholder="Type a message...">
-                <button id="sendMessage" class="glowing-btn">Send</button>
+            <div class="info-section">
+                <h1>Welcome to AnonymousChat</h1>
+                <p>Connect anonymously and securely with others. Create your own private groups, chat freely, and enjoy real-time messaging without revealing your identity.</p>
+                <p>Features we offer:</p>
+                <ul class="features-list">
+                    <li>🔒 100% Anonymous Group Chats</li>
+                    <li>⚡ Real-time Secure Messaging</li>
+                    <li>👥 Create Private Groups Instantly</li>
+                    <li>🛡️ No Personal Information Required</li>
+                    <li>🌟 Beautiful, Simple & Safe Interface</li>
+                </ul>
+                <p>Start by creating a new group or join existing chat rooms anonymously. Enjoy seamless chatting experience today!</p>
             </div>
         </div>
     </div>
@@ -103,27 +110,9 @@
             // Close modal
             document.getElementById('createGroupModal').style.display = 'none';
         };
-
-        // Send Message
-        document.getElementById('sendMessage').onclick = function() {
-            const message = document.getElementById('messageInput').value;
-            if (message.trim()) {
-                socket.emit('groupMessage', { groupId: 'default', message, username: 'Anonymous' });
-                document.getElementById('messageInput').value = '';
-            }
-        };
-
-        // Receive Message
-        socket.on('groupMessage', ({ username, message }) => {
-            const item = document.createElement('div');
-            item.classList.add('message');
-            item.innerHTML = `
-                <span class="username">${username}</span>
-                <span class="message-text">${message}</span>
-            `;
-            document.getElementById('chatBox').appendChild(item);
-            document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
-        });
     </script>
 </body>
 </html>
+
+
+
