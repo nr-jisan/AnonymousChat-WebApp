@@ -14,7 +14,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      
     }
     .chat-container {
       width: 45%;
@@ -29,9 +28,9 @@
         flex: 3;
         display: flex;
         flex-direction: column;
-        max-width: 700px; /* NEW: set a maximum width */
+        max-width: 700px;
         width: 100%;
-        margin: 0 auto; /* NEW: center it */
+        margin: 0 auto;
     }
 
     .chat-header {
@@ -70,7 +69,7 @@
       margin-right: 10px;
     }
     .glowing-btn {
-        background: #7e33ff;
+        background: #7e33ff; /* Default button color */
         border: none;
         padding: 14px 24px;
         border-radius: 25px;
@@ -79,17 +78,28 @@
         font-size: 16px;
         cursor: pointer;
         transition: all 0.3s ease-in-out;
-        box-shadow: 0 0 6px rgba(255, 255, 255, 0.4); /* Subtle white glow */
+        box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
     }
 
     .glowing-btn:hover {
-        background: #9a66ff; /* Lighter purple on hover */
-        box-shadow: 0 0 12px rgba(255, 255, 255, 0.6); /* More pronounced glow on hover */
-        transform: scale(1.05); /* Slightly enlarge the button */
+        background: #9a66ff;
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+        transform: scale(1.05);
     }
 
-        .glowing-btn:active {
-        transform: scale(1); /* Reset scale on click */
+    .glowing-btn:active {
+        transform: scale(1);
+    }
+
+    /* Specific color change for the "Copy Group Link" button */
+    #copyGroupLinkBtn {
+        background: #201c2c; /* Change this to the desired color */
+    }
+
+    #copyGroupLinkBtn:hover {
+        background: #7e33ff;
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+        transform: scale(1.05);
     }
 
     .message {
@@ -135,7 +145,10 @@
     <div class="chat-main">
       <div class="chat-header">
         🔒 Secret Group
-        <button class="glowing-btn" onclick="location.href='/chat'">Leave</button>
+        <div>
+          <button id="copyGroupLinkBtn" class="glowing-btn">Copy Group Link</button>
+          <button class="glowing-btn" onclick="location.href='/chat'">Leave</button>
+        </div>
       </div>
       <div class="chat-box" id="chatBox"></div>
       <div class="chat-input">
@@ -219,6 +232,17 @@
         `;
         participantsList.appendChild(participantDiv);
       });
+    });
+
+    document.getElementById("copyGroupLinkBtn").addEventListener("click", function() {
+        const groupLink = window.location.href;
+        navigator.clipboard.writeText(groupLink)
+            .then(() => {
+                alert("Group link copied to clipboard!");
+            })
+            .catch(err => {
+                alert("Failed to copy the group link: " + err);
+            });
     });
 
     function kickUser(targetUsername) {

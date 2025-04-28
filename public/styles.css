@@ -162,7 +162,7 @@ input {
     text-shadow: 0px 0px 12px #b4b1b4;
 }
 .chat-background {
-    background-image: url('/images/background1.jpg'); /* Path to your background image */
+    background-image: url('/images/background2.jpg'); /* Path to your background image */
     background-size: cover;
     background-position: center;
     background-attachment: fixed; /* This keeps the background fixed while scrolling */
@@ -203,7 +203,7 @@ input {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: url('your-chatroom-image.jpg') center/cover no-repeat; /* Add your image */
+    background: url('/public/images/background3.jpg') center/cover no-repeat; /* Add your image */
     padding: 20px;
     color: white;
 }

@@ -5,6 +5,7 @@ const session = require("express-session");
 const { v4: uuidv4 } = require("uuid");
 const http = require("http");
 const socketIo = require("socket.io");
+const bcrypt = require("bcryptjs");
 
 const app = express();
 const server = http.createServer(app);
@@ -53,33 +54,57 @@ app.get("/logout", (req, res) => {
 // Handle registration form submission
 app.post("/register", (req, res) => {
     const { username, email, password } = req.body;
-    const sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-    db.query(sql, [username, email, password], (err) => {
+
+    // Hash the password before saving it
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
         if (err) {
-            console.error("Registration Error:", err);
-            return res.status(500).send("Registration failed.");
+            console.error("Error hashing password:", err);
+            return res.status(500).send("Internal server error.");
         }
-        res.redirect("/login");
+
+        const sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+        db.query(sql, [username, email, hashedPassword], (err) => {
+            if (err) {
+                console.error("Registration Error:", err);
+                return res.status(500).send("Registration failed.");
+            }
+            res.redirect("/login");
+        });
     });
 });
 
+
+// Handle login form submission
 // Handle login form submission
 app.post("/login", (req, res) => {
     const { username, password } = req.body;
-    const sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-    db.query(sql, [username, password], (err, results) => {
+    const sql = "SELECT * FROM users WHERE username = ?";
+    db.query(sql, [username], (err, results) => {
         if (err) {
             console.error("Login Error:", err);
             return res.status(500).send("Login failed.");
         }
         if (results.length > 0) {
-            req.session.user = results[0];
-            res.redirect("/chat");
+            // Compare the entered password with the stored hashed password
+            bcrypt.compare(password, results[0].password, (err, isMatch) => {
+                if (err) {
+                    console.error("Error comparing passwords:", err);
+                    return res.status(500).send("Internal server error.");
+                }
+
+                if (isMatch) {
+                    req.session.user = results[0];
+                    res.redirect("/chat");
+                } else {
+                    res.send("Invalid username or password. <a href='/login'>Try again</a>");
+                }
+            });
         } else {
             res.send("Invalid username or password. <a href='/login'>Try again</a>");
         }
     });
 });
+
 
 // Rest of your code (groups, sockets, etc.)
 app.get("/group/:groupId", (req, res) => {
