@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1747810803015,
+    "username": "user1",
+    "email": "admin1@gmail.com",
+    "password": "$2b$10$YTQOSFtmzXJFeUj94jOebeAOqVoz1GQGVOMO06HzHNGw4GF7MmHsS"
+  },
+  {
+    "id": 1747810862473,
+    "username": "user2",
+    "email": "nr@gmail.com",
+    "password": "$2b$10$uWzIyPz5Y3ZM0OBFhuNxQuQA2V9eikolzSmlzx9Wd5idVa6yxBDMa"
+  }
+]

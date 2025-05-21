@@ -1,0 +1,27 @@
+{
+  "name": "Group1",
+  "max_members": "3",
+  "adminId": 1747810803015,
+  "members": [
+    {
+      "userId": 1747810803015,
+      "anon_name": "Anon8018"
+    },
+    {
+      "userId": 1747810862473,
+      "anon_name": "Anon8977"
+    }
+  ],
+  "messages": [
+    {
+      "username": "Anon8018",
+      "message": "hi",
+      "time": "2025-05-21T07:00:23.520Z"
+    },
+    {
+      "username": "Anon8977",
+      "message": "hello",
+      "time": "2025-05-21T07:01:18.213Z"
+    }
+  ]
+}
