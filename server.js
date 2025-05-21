@@ -28,8 +28,8 @@ app.set("view engine", "ejs");
 
 // Redirect root to login
 app.get("/", (req, res) => res.redirect("/login"));
-app.get("/register", (req, res) => res.render("register"));
-app.get("/login", (req, res) => res.render("login"));
+app.get("/register", (req, res) => res.render("register", { error: null }));
+app.get("/login", (req, res) => res.render("login", { error: null }));
 app.get("/chat", (req, res) => {
     if (!req.session.user) return res.redirect("/login");
     res.render("chat", { username: req.session.user.username });
@@ -41,7 +41,7 @@ app.get("/logout", (req, res) => {
 
 // ---------- USER REGISTRATION ----------
 app.post("/register", (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, password } = req.body;
 
     fs.readFile("./data/users.json", "utf8", (err, data) => {
         if (err) return res.status(500).send("Server error.");
@@ -54,13 +54,13 @@ app.post("/register", (req, res) => {
         }
 
         if (users.find(user => user.username === username)) {
-            return res.send("Username already taken. <a href='/register'>Try again</a>");
+            return res.render("register", { error: "Username already taken." });
         }
 
         bcrypt.hash(password, 10, (err, hashedPassword) => {
             if (err) return res.status(500).send("Internal error.");
 
-            const newUser = { id: Date.now(), username, email, password: hashedPassword };
+            const newUser = { id: Date.now(), username, password: hashedPassword };
             users.push(newUser);
             fs.writeFile("./data/users.json", JSON.stringify(users, null, 2), err => {
                 if (err) return res.status(500).send("Failed to save user.");
@@ -86,11 +86,12 @@ app.post("/login", (req, res) => {
 
         const user = users.find(u => u.username === username);
 
-        if (!user) return res.send("Invalid credentials. <a href='/login'>Try again</a>");
+        if (!user) return res.render("login", { error: "Invalid username or password." });
 
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) return res.status(500).send("Error.");
-            if (!isMatch) return res.send("Invalid credentials. <a href='/login'>Try again</a>");
+            if (!isMatch) return res.render("login", { error: "Invalid username or password." });
+
             req.session.user = user;
             res.redirect("/chat");
         });
@@ -119,33 +120,43 @@ app.post("/createGroup", (req, res) => {
 
 // ---------- JOIN GROUP ----------
 app.get("/group/:groupId", (req, res) => {
-    if (!req.session.user) return res.redirect("/login");
-
     const groupId = req.params.groupId;
     const filePath = path.join(__dirname, "data", "groups", `${groupId}.json`);
 
     if (!fs.existsSync(filePath)) return res.send("Group not found");
 
-    let groupData = {};
+    let groupData;
     try {
         groupData = JSON.parse(fs.readFileSync(filePath));
     } catch (err) {
         console.error("Error reading group file:", err);
         return res.send("Error loading group.");
     }
-    
-    const userId = req.session.user.id;
-    let member = groupData.members.find(m => m.userId === userId);
-    if (!member) {
-        const anonName = `Anon${Math.floor(1000 + Math.random() * 9000)}`;
-        member = { userId, anon_name: anonName };
-        groupData.members.push(member);
+
+    let userId, username;
+
+    // If logged in, use session info
+    if (req.session.user) {
+        userId = req.session.user.id;
+        const existing = groupData.members.find(m => m.userId === userId);
+        if (!existing) {
+            username = `Anon${Math.floor(1000 + Math.random() * 9000)}`;
+            groupData.members.push({ userId, anon_name: username });
+            fs.writeFileSync(filePath, JSON.stringify(groupData, null, 2));
+        } else {
+            username = existing.anon_name;
+        }
+    } else {
+        // Guest user
+        userId = `guest-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+        username = `Guest${Math.floor(1000 + Math.random() * 9000)}`;
+        groupData.members.push({ userId, anon_name: username });
         fs.writeFileSync(filePath, JSON.stringify(groupData, null, 2));
     }
 
     res.render("groupChat", {
         groupId,
-        username: member.anon_name,
+        username,
         userId
     });
 });

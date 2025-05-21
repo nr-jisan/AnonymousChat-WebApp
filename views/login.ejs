@@ -22,6 +22,9 @@
         <div class="auth-container">
             <div class="form-box">
                 <h1 class="title">Login</h1>
+                <% if (error) { %>
+                    <div style="color: red; margin-bottom: 10px;"><%= error %></div>
+                <% } %>
                 <form action="/login" method="POST">
                     <div class="input-group">
                         <input type="text" name="username" required placeholder="Username">
@@ -35,9 +38,5 @@
             </div>
         </div>
     </div>
-
-    <footer>
-        <p><a href="#">Terms Of Service</a> | <a href="#">Privacy Policy</a> | <a href="#">Community Guidelines</a></p>
-    </footer>
 </body>
 </html>

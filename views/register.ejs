@@ -21,12 +21,12 @@
         <div class="auth-container">
             <div class="form-box">
                 <h1 class="title">Create Account</h1>
+                <% if (error) { %>
+                    <div style="color: red; margin-bottom: 10px;"><%= error %></div>
+                <% } %>
                 <form action="/register" method="POST">
                     <div class="input-group">
                         <input type="text" name="username" required placeholder="Username">
-                    </div>
-                    <div class="input-group">
-                        <input type="email" name="email" required placeholder="Email">
                     </div>
                     <div class="input-group">
                         <input type="password" name="password" required placeholder="Password">
@@ -38,8 +38,5 @@
         </div>
     </div>
 
-    <footer>
-        <p><a href="#">Terms Of Service</a> | <a href="#">Privacy Policy</a> | <a href="#">Community Guidelines</a></p>
-    </footer>
 </body>
 </html>
